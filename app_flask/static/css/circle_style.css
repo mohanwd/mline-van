@@ -1,0 +1,41 @@
+
+h1 {
+    color:green;
+}
+.xyz {
+    background-size: auto;
+    text-align: center;
+    padding-top: 100px;
+}
+.btn-circle.btn-sm {
+    width: 50px;
+    height: 50px;
+    padding: 6px 0px;
+    border-radius: 25px;
+    font-size: 14px;
+    text-align: center;
+}
+.btn-circle.btn-md {
+    width: 60px;
+    height: 60px;
+    padding: 7px 10px;
+    border-radius: 30px;
+    font-size: 16px;
+    text-align: center;
+}
+.btn-circle.btn-xl {
+    width: 80px;
+    height: 80px;
+    padding: 10px 16px;
+    border-radius: 40px;
+    font-size: 19px;
+    text-align: center;
+}
+
+
+ #circle {
+      width: 100px;
+      height: 100px;
+      background: red;
+      border-radius: 50%
+    }
