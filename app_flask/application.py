@@ -2,24 +2,10 @@ from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
 import datetime
 from pytz import timezone
-import mysql.connector
 import flask
 import json
+import db_process as db
 
-mydb = mysql.connector.connect(
-  host="in8.fcomet.com",
-  user="dtcorpsc_user",
-  password="dtcorpsc_password",
-  database="dtcorpsc_mp"
-)
-
-
-def getCustomer():
-    mycursor = mydb.cursor()
-    mycursor.execute("SELECT * FROM customers")
-    customers = mycursor.fetchall()
-    mycursor.close()
-    return customers
 
 
 dt = datetime.datetime.now()
@@ -57,7 +43,7 @@ def line():
     print("User & Passowrd", password)
     if username == 'giri' and password == 'giri@2021':
         session["name"] = username
-        customers = getCustomer()
+        customers = db.getCustomer()
         return render_template('trans/line.html',linetime=AM_PM,customers=customers)
     else:
     	return render_template('trans/login.html',err_message = 'Incorrect UserName or Password')
@@ -78,10 +64,7 @@ def background_process_test(js_data):
     sql = "INSERT INTO line (cust_id, qty, unit_price, line, user_id) VALUES (%s, %s, %s, %s, %s)"
     val = (js_data["cust_id"], js_data["qty"], js_data["price"], AM_PM, js_data["userid"])
     print(val)
-    mycursor = mydb.cursor()
-    mycursor.execute(sql, val)
-    mydb.commit()
-    mycursor.close()
+    db.putLine(sql,val)
     # json_data = flask.request.json
     # print(json_data)
     return ("nothing")
