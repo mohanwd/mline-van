@@ -3,20 +3,21 @@
  
    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no">
  
   	<!-- Bootstrap CSS -->
-	<link rel="stylesheet" href= "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> 
+	<link rel="stylesheet" href="static/css/bootstrap.min.css"> 
 	<link rel="stylesheet" href="static/css/login_style.css">
 	<link rel="stylesheet" href="static/css/style.css">
 	<link rel="stylesheet" href="static/css/circle_style.css">
 
-	<script src= "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"> </script> 	        
-	<script src= "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"> </script> 
-	<script src= "https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"> </script> 
+
+	<script src="static/js/popper.min.js"></script>
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src= "static/js/jquery.min.js"></script> 
 	<script type=text/javascript>
         $(function() {
-          $('a#test').on('click', function(e) {
+          $('a#next').on('click', function(e) {
             e.preventDefault()
             var form_id = $(this).closest("form").attr('id');
             const form = document.getElementById(form_id);
@@ -36,26 +37,46 @@
             document.getElementById(form_id).style.display = "none"
             var ele = document.getElementById(form_id)
 
-       //     ele.style.visibility = "hidden";
        		if (ele.nextElementSibling!=null) {
        			ele.nextElementSibling.style.display = "block";
        		} else {
        			ele.nextElementSibling.style.display = "block";
        			document.getElementById('final-messager').style.display = "block"
        		}
-            
-
             return false;
           });
+
         });
 
 
-        function myFunction(val,id) {
+
+
+        $(function() {
+        	$('a#skip').on('click', function(e) {
+            e.preventDefault()
+        	var form_id = $(this).closest("form").attr('id');
+            document.getElementById(form_id).style.display = "none"
+            var ele = document.getElementById(form_id)
+       		if (ele.nextElementSibling!=null) {
+       			ele.nextElementSibling.style.display = "block";
+       		} else {
+       			ele.nextElementSibling.style.display = "block";
+       			document.getElementById('final-messager').style.display = "block"
+       		}
+       
+       		});
+        });
+
+		function myFunction(val,id) {
     
         	curr_qty = document.getElementById(id).value
         	document.getElementById(id).value = parseFloat(curr_qty)+parseFloat(val);
         	//document.getElementById("demo").innerHTML = "Hello World";
         }
+        
+
+
+
 	</script>
 
 </head>
@@ -66,50 +87,62 @@
     <!-- row and justify-content-center class is used to place the form in center -->
     <section class="row justify-content-center">
       <section class="col-12 col-sm-6 col-md-4">
-      	<form class="form-container" method="GET" action="logout">
+      	<!--<form class="form-container" method="GET" action="logout">
         	<button type="submit" class="btn btn-danger pull-left btn-sm">Sign Out</button>
-    	</form>
+    	</form>-->
+
 
 			{%for cust in customers%}
 				<form class="form-container line-content float-none" id="formid_{{cust[0]}}" method="POST" action="line">
 			        <div class="form-group">
+			        <a class="btn-sm btn btn-warning text-white" href="/logout">Sign Out</a>
 			          {% if linetime =='AM' %}
-			          <div class="float-right btn btn-sm bg-warning text-white">Morning</div>
+			          <div class="float-right btn btn-md bg-warning text-white">Morn</div>
 			          {% else %}
-			          <div class="float-right btn btn-sm bg-primary text-white">Evening</div>
+			          <div class="float-right btn btn-md bg-primary text-white">Even</div>
 			          {% endif %}
 			          <br/>
+			          <br/>
+
 			        </div>
+			        
 			        <div class="form-group">
-			          <h3 class="text-center font-weight-bold" id="custid"> {{cust[0]}} </h3>
-			          <input type="hidden" class="form-control  col-xs-2" id="customerid" name="id" value="{{cust[0]}}">
-			          <input type="hidden" class="form-control  col-xs-2" id="price" name="id" value="{{cust[5]}}">
-			          <input type="hidden" class="form-control  col-xs-2" id="userid" name="id" value="{{cust[6]}}">
-			          <label class="text-center" for="CustUser" ><strong> {{ cust[1] }}</strong></label>
+
+			          <!--<button type="button" class="btn btn-danger float-left"  onclick="skipper()">Skip</button>-->
+			          <a href="#" class="btn btn-danger" id="skip">&emsp;Skip&emsp;</a>
+			          <h1 class="text-right font-weight-bold" id="custid"> {{cust[0]}} </h1>
+			          
+			          <input type="hidden" class="form-control col-xs-2" id="customerid" name="id" value="{{cust[0]}}">
+			          <input type="hidden" class="form-control col-xs-2" id="price" name="id" value="{{cust[5]}}">
+			          <input type="hidden" class="form-control col-xs-2" id="userid" name="id" value="{{cust[6]}}">
+			          <label class="cust-name" for="CustUser" ><strong> {{ cust[1] }}</strong></label>
 			          <!--<label for="InputQty">Quantity</label>-->
 			          {% if linetime =='AM' %}
-					  <input type="input" class="form-control  col-xs-2" id="qty_{{cust[0]}}" name="InputQuantity" name="qty" value="{{cust[3]}}">
+					  <input type="input" class="text-right form-control  col-xs-2" id="qty_{{cust[0]}}" name="InputQuantity" name="qty" value="{{cust[3]}}">
 					  {% else %}
-					  <input type="input" class="form-control  col-xs-2" id="qty_{{cust[0]}}" name="InputQuantity" name="qty" value="{{cust[4]}}">
+					  <input type="input" class="text-right form-control  col-xs-2" id="qty_{{cust[0]}}" name="InputQuantity" name="qty" value="{{cust[4]}}">
 					  {% endif %}
 					  <br/>
-			          <button type="button" class="btn btn-danger btn-circle btn-md" onclick="myFunction(-1.00,'qty_{{cust[0]}}')" >-1.00</button> &nbsp;&nbsp;
-			          <button type="button" class="btn btn-warning btn-circle btn-sm" onclick="myFunction(-0.25,'qty_{{cust[0]}}')">-0.25</button> &nbsp;&nbsp;
-			          <button type="button" class="btn btn-primary btn-circle btn-sm" onclick="myFunction(+0.25,'qty_{{cust[0]}}')">+0.25</button> &nbsp;
-			          <button type="button" class="btn btn-success btn-circle btn-md" onclick="myFunction(+1.00,'qty_{{cust[0]}}')">+1.00</button> &nbsp;
+			         <!-- <button type="button" class="btn btn-danger btn-circle btn-md" onclick="myFunction(-1.00,'qty_{{cust[0]}}')" >-1.00</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+			          <button type="button" class="btn btn-warning btn-circle btn-sm" onclick="myFunction(-0.25,'qty_{{cust[0]}}')">-0.25</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			          <button type="button" class="btn btn-primary btn-circle btn-sm" onclick="myFunction(+0.25,'qty_{{cust[0]}}')">+0.25</button> &nbsp;&nbsp;&nbsp;
+			          <button type="button" class="btn btn-success btn-circle btn-sm" onclick="myFunction(+1.00,'qty_{{cust[0]}}')">+1.00</button>
 			          <br/>
 			          <br/>
-			          <button type="button" class="btn btn-danger float-left">Skip</button>
-			          <a href=# id=test><svg xmlns="http://www.w3.org/2000/svg" width="90" height="50" fill="currentColor" class="float-right btn bi-arrow-right btn-primary" viewBox="0 0 16 16">
+			          <br/>
+			          <br/>
+			          <a href=# id=next><svg xmlns="http://www.w3.org/2000/svg" width="90" height="50" fill="currentColor" class="btn bi-arrow-right btn-primary btn-block" viewBox="0 0 16 16">
 					  	<path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 					  </svg></a>
-					  <br/>
 			        </div>
 			        <!--<button type="submit" class="btn btn-primary btn-block"></button>-->
 		        </form>
 		     {% endfor %}
-		     <div class="btn btn-success btn-block line-content btn-xl" id="final-messager">
-		     	Line Customers Completed
+		     <div class="line-content" id="final-messager">
+			     <a class="btn-sm btn btn-warning text-white text-white" href="/logout">Sign Out</a>
+			     <div class="btn btn-success btn-block  btn-xl" >
+			     	Line Customers Completed
+			     </div>
 		     </div>
 
       </section>
@@ -119,7 +152,7 @@
 <script>
 
 
-function hide_seek(){
+function skipper(){
 
 }
 </script>
