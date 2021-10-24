@@ -11,7 +11,6 @@
 	<link rel="stylesheet" href="static/css/style.css">
 	<link rel="stylesheet" href="static/css/circle_style.css">
 
-
 	<script src="static/js/popper.min.js"></script>
 	<script src="static/js/bootstrap.min.js"></script>
 	<script src= "static/js/jquery.min.js"></script> 
@@ -45,11 +44,7 @@
        		}
             return false;
           });
-
         });
-
-
-
 
         $(function() {
         	$('a#skip').on('click', function(e) {
@@ -67,26 +62,43 @@
        		});
         });
 
+        $(function() {
+        	$('a#previous').on('click', function(e) {
+            e.preventDefault()
+        	var form_id = $(this).closest("form").attr('id');
+            var ele = document.getElementById(form_id)
+       		if (ele.previousElementSibling!=null) {
+       			document.getElementById(form_id).style.display = "none"
+       			ele.previousElementSibling.style.display = "block";
+       		} else {
+       			//ele.previousElementSibling.style.display = "block";
+       			//document.getElementById('final-messager').style.display = "block"
+       			console.log('No previos elements');
+       		}
+       		});
+        });
+
 		function myFunction(val,id) {
     
         	curr_qty = document.getElementById(id).value
         	document.getElementById(id).value = parseFloat(curr_qty)+parseFloat(val);
         	//document.getElementById("demo").innerHTML = "Hello World";
         }
-        
-
-
-
+        function viewFirstForm(){
+	        firstCust = $("#line-list").children(":first").attr("id");
+	        document.getElementById(firstCust).style.display = "block"
+	        
+        }
 	</script>
 
 </head>
  
-<body>
+<body onload="viewFirstForm();">
 <!-- Login form creation starts-->
   <section class="container-fluid">
     <!-- row and justify-content-center class is used to place the form in center -->
     <section class="row justify-content-center">
-      <section class="col-12 col-sm-6 col-md-4">
+      <section class="col-12 col-sm-6 col-md-4" id="line-list">
       	<!--<form class="form-container" method="GET" action="logout">
         	<button type="submit" class="btn btn-danger pull-left btn-sm">Sign Out</button>
     	</form>-->
@@ -94,23 +106,46 @@
 
 			{%for cust in customers%}
 				<form class="form-container line-content float-none" id="formid_{{cust[0]}}" method="POST" action="line">
-			        <div class="form-group">
+			        <div>
 			        <a class="btn-sm btn btn-warning text-white" href="/logout">Sign Out</a>
 			          {% if linetime =='AM' %}
-			          <div class="float-right btn btn-md bg-warning text-white">Morn</div>
+			          <div class="float-right btn btn-sm bg-warning text-white">Morn</div>
 			          {% else %}
-			          <div class="float-right btn btn-md bg-primary text-white">Even</div>
+			          <div class="float-right btn btn-sm bg-primary text-white">Even</div>
 			          {% endif %}
-			          <br/>
-			          <br/>
+			        </div>
 
+			        <div class="hist table table-sm">
+			        	<table>
+			        		<th>Date</th>
+			        		<th>Morning</th>
+			        		<th>Evening</th>
+			        	{% for h in cust_hist[cust[0]] %}
+			        		<tr>
+			        			<td>{{h[0]}}</td>
+			        			<td>{{h[1]}}</td>
+			        			<td>{{h[2]}}</td>
+			        		</tr>
+			        	{% endfor %}
+			        	</table>
 			        </div>
 			        
 			        <div class="form-group">
 
 			          <!--<button type="button" class="btn btn-danger float-left"  onclick="skipper()">Skip</button>-->
+			          <a href=# class="btn btn-warning" id="previous">&emsp;Prev&emsp;</a>&emsp;
 			          <a href="#" class="btn btn-danger" id="skip">&emsp;Skip&emsp;</a>
+			          <!--<div class="input-group">
+						  <div class="form-outline">
+						    <input type="search" id="form1" class="form-control" />
+						    <label class="form-label" for="form1">Search</label>
+						  </div>
+						  <button type="button" class="btn btn-primary">
+						    <i class="fas fa-search"></i>
+						  </button>
+					  </div> -->
 			          <h1 class="text-right font-weight-bold" id="custid"> {{cust[0]}} </h1>
+
 			          
 			          <input type="hidden" class="form-control col-xs-2" id="customerid" name="id" value="{{cust[0]}}">
 			          <input type="hidden" class="form-control col-xs-2" id="price" name="id" value="{{cust[5]}}">
@@ -118,9 +153,9 @@
 			          <label class="cust-name" for="CustUser" ><strong> {{ cust[1] }}</strong></label>
 			          <!--<label for="InputQty">Quantity</label>-->
 			          {% if linetime =='AM' %}
-					  <input type="input" class="text-right form-control  col-xs-2" id="qty_{{cust[0]}}" name="InputQuantity" name="qty" value="{{cust[3]}}">
+					  <input type="input" class="text-right form-control  col-xs-2 form-qty" id="qty_{{cust[0]}}" name="InputQuantity" name="qty" value="{{cust[3]}}">
 					  {% else %}
-					  <input type="input" class="text-right form-control  col-xs-2" id="qty_{{cust[0]}}" name="InputQuantity" name="qty" value="{{cust[4]}}">
+					  <input type="input" class="text-right form-control  col-xs-2 form-qty" id="qty_{{cust[0]}}" name="InputQuantity" name="qty" value="{{cust[4]}}">
 					  {% endif %}
 					  <br/>
 			         <!-- <button type="button" class="btn btn-danger btn-circle btn-md" onclick="myFunction(-1.00,'qty_{{cust[0]}}')" >-1.00</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
@@ -139,7 +174,9 @@
 		        </form>
 		     {% endfor %}
 		     <div class="line-content" id="final-messager">
+
 			     <a class="btn-sm btn btn-warning text-white text-white" href="/logout">Sign Out</a>
+
 			     <div class="btn btn-success btn-block  btn-xl" >
 			     	Line Customers Completed
 			     </div>

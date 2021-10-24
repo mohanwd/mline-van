@@ -9,15 +9,16 @@
   background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
 }
 
-
 .line-content{
     display: none;
 
 }
 
-#formid_1{
+/*
+Commenting below code as this functionality is improved in javascript dynamically
+#formid_1001{
 	display: block
-}
+}*/
 
 #customerid{
 	display: none;
@@ -25,14 +26,13 @@
 
 body{
 	background: #383a3d;
-	padding-top: 5vh;	
+	padding-top: 1vh;	
 }
 
-.form-control{
+.form-qty{
 	height: calc(1.5em + .75rem + 20px);
 	font-size: 2rem;
 }
-
 
 #custid{
 	font-size: xx-large;
@@ -40,4 +40,19 @@ body{
 
 .cust-name{
 	font-size: xx-large;
+}
+
+.hist{
+	height:10%;
+	overflow: auto;
+	font-size: small;
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+.hist td,.hist th{
+	padding: 0;
+    padding-right: 0.2rem;
+    text-align: center;
+    font-size: small;
 }

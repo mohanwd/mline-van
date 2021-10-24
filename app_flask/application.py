@@ -43,8 +43,9 @@ def line():
     print("User & Passowrd", password)
     if username == 'giri' and password == 'giri@2021':
         session["name"] = username
-        customers = db.getCustomer()
-        return render_template('trans/line.html',linetime=AM_PM,customers=customers)
+        customers = db.getCustomer(AM_PM)
+        cust_hist = db.getCustHist(customers)
+        return render_template('trans/line.html',linetime=AM_PM,customers=customers,cust_hist=cust_hist)
     else:
     	return render_template('trans/login.html',err_message = 'Incorrect UserName or Password')
 
